@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pub/src/features/details_post/presentation/pages/details_post_page.dart';
+import 'package:pub/src/features/details_pub/presentation/pages/details_pub_page.dart';
 import 'package:pub/src/features/home/presentation/pages/home_page.dart';
 
 void main() {
@@ -23,6 +25,25 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const HomePage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/details-post') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => DetailsPostPage(
+              imageUrl: args['imageUrl'],
+            ),
+          );
+        }
+        if (settings.name == '/details-pub') {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (context) => DetailsPubPage(
+              id: args['id'],
+            ),
+          );
+        }
+        return null;
+      },
     );
   }
 }

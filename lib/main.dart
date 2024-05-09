@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pub/src/core/getIt/register_dependencies.dart';
 import 'package:pub/src/features/details_post/presentation/pages/details_post_page.dart';
 import 'package:pub/src/features/details_pub/presentation/pages/details_pub_page.dart';
 import 'package:pub/src/features/home/presentation/pages/home_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  GetItCore(GetIt.instance).init();
   runApp(const MyApp());
 }
 

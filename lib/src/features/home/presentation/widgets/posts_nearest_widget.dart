@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
 
-class PostsWidget extends StatefulWidget {
-  const PostsWidget({super.key});
+class PostsNearestWidget extends StatefulWidget {
+  const PostsNearestWidget({super.key});
 
   @override
-  State<PostsWidget> createState() => _PostsWidgetState();
+  State<PostsNearestWidget> createState() => _PostsNearestWidgetState();
 }
 
-class _PostsWidgetState extends State<PostsWidget> {
+class _PostsNearestWidgetState extends State<PostsNearestWidget> {
+  DiscoveryController? _controller;
+
+  @override
+  void initState() {
+    _controller = GetIt.I.get<DiscoveryController>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,13 +26,12 @@ class _PostsWidgetState extends State<PostsWidget> {
         height: 100,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {
+          itemCount: _controller?.nearestPosts?.list?.length,
+          itemBuilder: (BuildContext context, int i) {
             return GestureDetector(
               onTap: () => Navigator.of(context).pushNamed('/details-post',
                   arguments: {
-                    'imageUrl':
-                        'https://img.abcfc.com.br/uploads/2017/10/promo_cerveja_vitrine.png'
+                    'imageUrl': _controller?.nearestPosts?.list?[i].imageUrl
                   }),
               child: SizedBox(
                 width: 300,
@@ -38,39 +47,42 @@ class _PostsWidgetState extends State<PostsWidget> {
                           width: 120,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
+                            image: DecorationImage(
                               fit: BoxFit.fill,
                               image: NetworkImage(
-                                'https://img.abcfc.com.br/uploads/2017/10/promo_cerveja_vitrine.png',
+                                _controller?.nearestPosts?.list?[i].imageUrl ??
+                                    '',
                               ),
                             ),
                           ),
                         ),
                       ),
                       const Expanded(child: SizedBox()),
-                      const SizedBox(
+                      SizedBox(
                         height: 100,
                         width: 160,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Prepare for your first skateboard jump',
-                              style: TextStyle(
+                              _controller?.nearestPosts?.list?[i].title ?? '',
+                              style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w700),
                             ),
-                            Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox()),
                             Text(
-                              'Bixxos bar',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
+                              _controller?.nearestPosts?.list?[i].pubName ?? '',
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
                             ),
                             Text(
-                              '04/05/2024 ás 20:38',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11),
+                              _controller?.nearestPosts?.list?[i].date
+                                      .toString() ??
+                                  '',
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 11),
                             )
                           ],
                         ),

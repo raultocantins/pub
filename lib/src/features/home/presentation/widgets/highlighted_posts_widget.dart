@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
 
 class HighlightedPostsWidget extends StatefulWidget {
   const HighlightedPostsWidget({super.key});
@@ -8,6 +10,14 @@ class HighlightedPostsWidget extends StatefulWidget {
 }
 
 class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
+  DiscoveryController? _controller;
+
+  @override
+  void initState() {
+    _controller = GetIt.I.get<DiscoveryController>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,7 +25,7 @@ class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
       child: SizedBox(
         height: 200,
         child: ListView.builder(
-          itemCount: 3,
+          itemCount: _controller?.highlightedPosts?.list?.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, i) {
             return Padding(
@@ -23,8 +33,7 @@ class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
               child: GestureDetector(
                 onTap: () => Navigator.of(context)
                     .pushNamed('/details-post', arguments: {
-                  'imageUrl':
-                      'https://s2-techtudo.glbimg.com/-5_mIAH6B33Ub6P8RRk834bnaAE=/0x0:1280x720/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2020/l/p/P7byPHQHSBtN4q9ncthg/maxresdefault.jpg'
+                  'imageUrl': _controller?.highlightedPosts?.list?[i].imageUrl
                 }),
                 child: SizedBox(
                   width: 300,
@@ -32,11 +41,11 @@ class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: NetworkImage(
-                            'https://s2-techtudo.glbimg.com/-5_mIAH6B33Ub6P8RRk834bnaAE=/0x0:1280x720/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2020/l/p/P7byPHQHSBtN4q9ncthg/maxresdefault.jpg',
-                          ),
+                          image: NetworkImage(_controller
+                                  ?.highlightedPosts?.list?[i].imageUrl ??
+                              ''),
                         ),
                       ),
                       child: Stack(
@@ -55,22 +64,26 @@ class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
                                   ),
                                 ],
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 24, vertical: 12),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Dobradinha de chopp até as 22hrs',
-                                      style: TextStyle(
+                                      _controller?.highlightedPosts?.list?[i]
+                                              .title ??
+                                          '',
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
                                     ),
                                     Text(
-                                      'Bixxos Bar Hoje ás 18:30',
-                                      style: TextStyle(
+                                      _controller?.highlightedPosts?.list?[i]
+                                              .pubName ??
+                                          '',
+                                      style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                     ),

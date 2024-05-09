@@ -12,6 +12,8 @@ PostModel _$PostModelFromJson(Map json) => PostModel(
       title: json['title'] as String,
       date: DateTime.parse(json['date'] as String),
       pubName: json['pubName'] as String,
+      pubId: json['pubId'] as String,
+      pubImageUrl: json['pubImageUrl'] as String,
       description: json['description'] as String?,
     );
 
@@ -21,5 +23,7 @@ Map<String, dynamic> _$PostModelToJson(PostModel instance) => <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'pubName': instance.pubName,
+      'pubId': instance.pubId,
+      'pubImageUrl': instance.pubImageUrl,
       'date': instance.date.toIso8601String(),
     };

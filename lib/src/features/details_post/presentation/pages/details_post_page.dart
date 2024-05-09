@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pub/src/features/home/domain/entities/post_entity.dart';
+import 'package:pub/src/shared/helpers/format_date.dart';
 
 class DetailsPostPage extends StatefulWidget {
-  final String imageUrl;
-  const DetailsPostPage({super.key, required this.imageUrl});
+  final PostEntity entity;
+  const DetailsPostPage({super.key, required this.entity});
 
   @override
   State<DetailsPostPage> createState() => _DetailsPostPageState();
@@ -30,37 +32,36 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: NetworkImage(
-                        widget.imageUrl,
+                        widget.entity.imageUrl,
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 12, right: 12, top: 12),
+            Padding(
+              padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
               child: Text(
-                'Dobradinha de chopp até as 22hrs',
-                style: TextStyle(
+                widget.entity.title,
+                style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 22),
               ),
             ),
             ListTile(
-              onTap: () => Navigator.of(context)
-                  .pushNamed('/details-pub', arguments: {'id': ''}),
-              title: const Text(
-                'Bixxos bar',
-                style: TextStyle(color: Colors.white),
+              onTap: () => Navigator.of(context).pushNamed('/details-pub',
+                  arguments: {'id': widget.entity.pubId}),
+              title: Text(
+                widget.entity.pubName,
+                style: const TextStyle(color: Colors.white),
               ),
-              subtitle: const Text(
-                'Data do post: 07/05/2024 ás 12:11',
-                style: TextStyle(color: Colors.white),
+              subtitle: Text(
+                'Data do post: ${FormatDateCustom.dateWithHours(widget.entity.date)}',
+                style: const TextStyle(color: Colors.white),
               ),
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://www.mytapp.com.br/wp-content/uploads/2022/10/atrair_mais_clientes_bar.webp'),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(widget.entity.pubImageUrl),
               ),
             ),
             const Padding(

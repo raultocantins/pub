@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:pub/src/features/home/presentation/widgets/highlighted_posts_widget.dart';
 import 'package:pub/src/features/home/presentation/widgets/posts_nearest_widget.dart';
 import 'package:pub/src/features/home/presentation/widgets/posts_promotions_widget.dart';
@@ -28,71 +27,69 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
         ),
         centerTitle: false,
       ),
-      body: Observer(builder: (context) {
-        return const SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 24, top: 24, bottom: 12),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Destaques",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
-                  ),
+      body: const SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 24, top: 24, bottom: 12),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Destaques",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
-              HighlightedPostsWidget(),
-              Padding(
-                padding: EdgeInsets.only(left: 24),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Mais próximos",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
-                  ),
+            ),
+            HighlightedPostsWidget(),
+            Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Mais próximos",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
-              PostsNearestWidget(),
-              Padding(
-                padding: EdgeInsets.only(left: 24),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Promoções",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
-                  ),
+            ),
+            PostsNearestWidget(),
+            Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Promoções",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
-              PostsPromotionsWidget(),
-              Padding(
-                padding: EdgeInsets.only(left: 24),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "De hoje",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
-                  ),
+            ),
+            PostsPromotionsWidget(),
+            Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "De hoje",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
-              PostsTodayWidget(),
-            ],
-          ),
-        );
-      }),
+            ),
+            PostsTodayWidget(),
+          ],
+        ),
+      ),
     );
   }
 }

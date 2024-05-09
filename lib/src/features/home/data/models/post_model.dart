@@ -10,6 +10,8 @@ class PostModel {
   String title;
   String? description;
   String pubName;
+  String pubId;
+  String pubImageUrl;
   DateTime date;
 
   PostModel({
@@ -18,6 +20,8 @@ class PostModel {
     required this.title,
     required this.date,
     required this.pubName,
+    required this.pubId,
+    required this.pubImageUrl,
     this.description,
   });
 
@@ -32,17 +36,20 @@ class PostModel {
         imageUrl: model.imageUrl,
         pubName: model.pubName,
         title: model.title,
-        description: model.description);
+        description: model.description,
+        pubId: model.pubId,
+        pubImageUrl: model.pubImageUrl);
   }
 
   static PostModel toModel(PostEntity entity) {
     return PostModel(
-      id: entity.id,
-      date: entity.date,
-      imageUrl: entity.imageUrl,
-      pubName: entity.pubName,
-      title: entity.title,
-      description: entity.description,
-    );
+        id: entity.id,
+        date: entity.date,
+        imageUrl: entity.imageUrl,
+        pubName: entity.pubName,
+        title: entity.title,
+        description: entity.description,
+        pubId: entity.pubId,
+        pubImageUrl: entity.pubImageUrl);
   }
 }

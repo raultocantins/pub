@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
             builder: (context) => DetailsPostPage(
-              imageUrl: args['imageUrl'],
+              entity: args['entity'],
             ),
           );
         }

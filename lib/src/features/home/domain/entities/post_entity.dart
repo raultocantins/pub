@@ -5,6 +5,8 @@ class PostEntity {
   String? description;
   String pubName;
   DateTime date;
+  String pubId;
+  String pubImageUrl;
 
   PostEntity({
     required this.id,
@@ -12,6 +14,8 @@ class PostEntity {
     required this.title,
     required this.date,
     required this.pubName,
+    required this.pubId,
+    required this.pubImageUrl,
     this.description,
   });
 }

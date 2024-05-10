@@ -42,4 +42,15 @@ class MockHttpResponse {
       'page': 1
     };
   }
+
+  static Future<Map<String, dynamic>> getDetailSuccess(
+      {Duration duration = defaultDuration}) async {
+    await Future.delayed(duration);
+    return {
+      'description':
+          '🍻 Não perca nossa Promoção de Chopp Especial Hoje! 🍻Junte-se a nós hoje à noite no nosso querido bar para uma noite inesquecível de diversão e sabor! Para tornar a sua experiência ainda mais incrível, estamos oferecendo uma promoção especial de chopp que você não vai querer perder!',
+      'lat': -10.24399,
+      'lng': -48.32473,
+    };
+  }
 }

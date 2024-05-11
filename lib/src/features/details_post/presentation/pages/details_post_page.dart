@@ -69,8 +69,14 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
                 ),
               ),
               ListTile(
-                onTap: () => Navigator.of(context).pushNamed('/details-pub',
-                    arguments: {'id': widget.entity.pubId}),
+                onTap: () => Navigator.of(context).pushNamed(
+                  '/details-pub',
+                  arguments: {
+                    'pubId': widget.entity.pubId,
+                    'pubImageUrl': widget.entity.pubImageUrl,
+                    'pubName': widget.entity.pubName,
+                  },
+                ),
                 title: Text(
                   widget.entity.pubName,
                   style: const TextStyle(color: Colors.white),

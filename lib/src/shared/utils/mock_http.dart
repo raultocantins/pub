@@ -53,4 +53,19 @@ class MockHttpResponse {
       'lng': -48.32473,
     };
   }
+
+  static Future<Map<String, dynamic>> getDetailPubSuccess(
+      {Duration duration = defaultDuration}) async {
+    await Future.delayed(duration);
+    return {
+      'images': [
+        'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+        'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg'
+      ],
+      'contactNumber': '63992086480',
+      'address': '1004sul alameda 14 lote 04',
+      'lat': -10.24399,
+      'lng': -48.32473,
+    };
+  }
 }

@@ -42,7 +42,9 @@ class MyApp extends StatelessWidget {
           final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(
             builder: (context) => DetailsPubPage(
-              id: args['id'],
+              pubId: args['pubId'],
+              pubImageUrl: args['pubImageUrl'],
+              pubName: args['pubName'],
             ),
           );
         }

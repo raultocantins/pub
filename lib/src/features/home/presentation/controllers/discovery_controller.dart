@@ -154,7 +154,7 @@ abstract class DiscoveryControllerBase with Store {
     setTodayLoading(false);
   }
 
-  dispose() {
+  void dispose() {
     highlightedLoading = false;
     nearestLoading = false;
     promotionsLoading = false;

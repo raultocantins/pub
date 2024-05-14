@@ -49,7 +49,7 @@ abstract class DetailPubControllerBase with Store {
     setLoading(false);
   }
 
-  dispose() {
+  void dispose() {
     entity = null;
     isError = false;
     isLoading = false;

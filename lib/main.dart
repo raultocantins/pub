@@ -4,6 +4,8 @@ import 'package:pub/src/core/getIt/register_dependencies.dart';
 import 'package:pub/src/features/details_post/presentation/pages/details_post_page.dart';
 import 'package:pub/src/features/details_pub/presentation/pages/details_pub_page.dart';
 import 'package:pub/src/features/home/presentation/pages/home_page.dart';
+import 'package:pub/src/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:pub/src/shared/helpers/local_storage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +15,17 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  Future<bool> verificarOnboarding() async {
+    bool isOpenedOnboarding =
+        await LocalStorageCustom.getBool('isOpenedOnboarding');
+    if (isOpenedOnboarding) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,8 +41,25 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: FutureBuilder<bool>(
+        future: verificarOnboarding(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container();
+          } else {
+            final bool onboardingMostrado = snapshot.data ?? false;
+            return onboardingMostrado
+                ? const HomePage()
+                : const OnboardingPage();
+          }
+        },
+      ),
       onGenerateRoute: (settings) {
+        if (settings.name == '/home') {
+          return MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          );
+        }
         if (settings.name == '/details-post') {
           final args = settings.arguments as Map<String, dynamic>;
           return MaterialPageRoute(

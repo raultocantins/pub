@@ -7,16 +7,27 @@ import 'package:pub/src/features/details_pub/data/repositories/get_detail_pub_re
 import 'package:pub/src/features/details_pub/domain/usecases/get_detail_pub_usecase.dart';
 import 'package:pub/src/features/details_pub/external/get_detail_pub_datasource.dart';
 import 'package:pub/src/features/details_pub/presentation/controllers/detail_pub_controller.dart';
+import 'package:pub/src/features/home/data/repositories/get_map_pubs_repository.dart';
 import 'package:pub/src/features/home/data/repositories/get_posts_repository.dart';
+import 'package:pub/src/features/home/domain/usecases/get_map_pubs_usecase.dart';
 import 'package:pub/src/features/home/domain/usecases/get_posts_usecase.dart';
+import 'package:pub/src/features/home/external/get_map_pubs_datasource.dart';
 import 'package:pub/src/features/home/external/get_posts_datasource.dart';
 import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
+import 'package:pub/src/features/home/presentation/controllers/map_pubs_controller.dart';
 
 class GetItCore {
   final GetIt instance;
   GetItCore(this.instance);
 
   void init() {
+    instance.registerSingleton<GetMapPubsUsecase>(
+      GetMapPubsUsecaseImpl(
+        GetMapPubsRepositoryImpl(
+          GetMapPubsDatasourceImpl(),
+        ),
+      ),
+    );
     instance.registerSingleton<GetDetailPubUsecase>(
       GetDetailPubUsecaseImpl(
         GetDetailPubRepositoryImpl(
@@ -49,6 +60,10 @@ class GetItCore {
     );
     instance.registerSingleton<DetailPubController>(
       DetailPubController(instance()),
+    );
+
+    instance.registerSingleton<MapPubsController>(
+      MapPubsController(instance()),
     );
   }
 }

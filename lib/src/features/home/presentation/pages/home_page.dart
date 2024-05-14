@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pub/src/features/home/presentation/pages/account_page.dart';
 import 'package:pub/src/features/home/presentation/pages/discovery_page.dart';
 import 'package:pub/src/features/home/presentation/pages/maps_page.dart';
 
@@ -25,7 +24,6 @@ class _HomePageState extends State<HomePage> {
         children: const [
           DiscoveryPage(),
           MapsPage(),
-          AccountPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -51,11 +49,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.map),
             label: 'Mapa',
             tooltip: 'Mapa',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Conta',
-            tooltip: 'Conta',
           ),
         ],
       ),

@@ -68,4 +68,50 @@ class MockHttpResponse {
       'lng': -48.32473,
     };
   }
+
+  static Future<Map<String, dynamic>> getMapPubs(
+      {Duration duration = defaultDuration}) async {
+    await Future.delayed(duration);
+    // -10.24399, -48.32473
+    return {
+      'pubs': [
+        {
+          'id': '1',
+          'imageUrl': 'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+          'lat': -10.24399,
+          'lng': -48.32473,
+          'pubName': 'Bar do Preto',
+          'address': '1004sul alameda 14 lote 04',
+          'images': [
+            'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+            'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg'
+          ],
+        },
+        {
+          'id': '2',
+          'imageUrl': 'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+          'lat': -10.24399,
+          'lng': -48.31073,
+          'pubName': 'Bar do Preto',
+          'address': '1004sul alameda 14 lote 04',
+          'images': [
+            'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+            'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg'
+          ],
+        },
+        {
+          'id': '3',
+          'imageUrl': 'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+          'lat': -10.24399,
+          'lng': -48.32933,
+          'pubName': 'Bar do Preto',
+          'address': '1004sul alameda 14 lote 04',
+          'images': [
+            'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg',
+            'https://pbs.twimg.com/media/Evo6MqKWQAIJ3P4.jpg'
+          ],
+        }
+      ],
+    };
+  }
 }

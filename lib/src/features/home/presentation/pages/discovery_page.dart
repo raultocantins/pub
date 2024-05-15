@@ -12,13 +12,15 @@ class DiscoveryPage extends StatefulWidget {
 }
 
 class _DiscoveryPageState extends State<DiscoveryPage> {
+  final bool isGpsActive = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         title: const Text(
-          'Discovery',
+          'Posts',
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w700,
@@ -27,13 +29,40 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
         ),
         centerTitle: false,
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (!isGpsActive)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        'Ativar localização',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             Padding(
-              padding: EdgeInsets.only(left: 24, top: 24, bottom: 12),
-              child: Align(
+              padding: EdgeInsets.only(
+                  left: 24, top: isGpsActive ? 24 : 0, bottom: 12),
+              child: const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Destaques",

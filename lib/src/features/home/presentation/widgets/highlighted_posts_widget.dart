@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
+import 'package:pub/src/shared/widgets/list_medium_shimmer.dart';
 
 class HighlightedPostsWidget extends StatefulWidget {
   const HighlightedPostsWidget({super.key});
@@ -28,9 +29,7 @@ class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
         child: SizedBox(
           height: 200,
           child: (_controller?.highlightedLoading ?? false)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? const ListMediumShimmerWidget()
               : ListView.builder(
                   itemCount: _controller?.highlightedPosts?.list?.length ?? 0,
                   scrollDirection: Axis.horizontal,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
+import 'package:pub/src/shared/widgets/list_small_shimmer.dart';
 
 class PostsTodayWidget extends StatefulWidget {
   const PostsTodayWidget({super.key});
@@ -28,9 +29,7 @@ class _PostsTodayWidgetState extends State<PostsTodayWidget> {
         child: SizedBox(
           height: 100,
           child: (_controller?.todayLoading ?? false)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? const ListSmallShimmerWidget()
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _controller?.todayPosts?.list?.length ?? 0,

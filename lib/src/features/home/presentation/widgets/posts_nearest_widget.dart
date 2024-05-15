@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
+import 'package:pub/src/shared/widgets/list_small_shimmer.dart';
 
 class PostsNearestWidget extends StatefulWidget {
   const PostsNearestWidget({super.key});
@@ -28,9 +29,7 @@ class _PostsNearestWidgetState extends State<PostsNearestWidget> {
         child: SizedBox(
           height: 100,
           child: (_controller?.nearestLoading ?? false)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? const ListSmallShimmerWidget()
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _controller?.nearestPosts?.list?.length ?? 0,

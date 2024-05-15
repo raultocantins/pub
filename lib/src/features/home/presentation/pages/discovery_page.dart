@@ -73,8 +73,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                 ),
               ),
             ),
-            HighlightedPostsWidget(),
-            Padding(
+            const HighlightedPostsWidget(),
+            const Padding(
               padding: EdgeInsets.only(left: 24),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -87,8 +87,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                 ),
               ),
             ),
-            PostsNearestWidget(),
-            Padding(
+            const PostsNearestWidget(),
+            const Padding(
               padding: EdgeInsets.only(left: 24),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -101,8 +101,8 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                 ),
               ),
             ),
-            PostsPromotionsWidget(),
-            Padding(
+            const PostsPromotionsWidget(),
+            const Padding(
               padding: EdgeInsets.only(left: 24),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -115,7 +115,7 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
                 ),
               ),
             ),
-            PostsTodayWidget(),
+            const PostsTodayWidget(),
           ],
         ),
       ),

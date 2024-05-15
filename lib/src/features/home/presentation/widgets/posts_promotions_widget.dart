@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
+import 'package:pub/src/shared/widgets/list_small_shimmer.dart';
 
 class PostsPromotionsWidget extends StatefulWidget {
   const PostsPromotionsWidget({super.key});
@@ -28,9 +29,7 @@ class _PostsPromotionsWidgetState extends State<PostsPromotionsWidget> {
         child: SizedBox(
           height: 100,
           child: (_controller?.promotionsLoading ?? false)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? const ListSmallShimmerWidget()
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _controller?.promotionsPosts?.list?.length ?? 0,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
 import 'package:pub/src/features/home/presentation/pages/discovery_page.dart';
 import 'package:pub/src/features/home/presentation/pages/maps_page.dart';
 
@@ -14,6 +16,14 @@ class _HomePageState extends State<HomePage> {
     initialPage: 0,
   );
   int currentIndex = 0;
+  DiscoveryController? _controller;
+  final bool isGpsActive = false;
+  @override
+  void initState() {
+    _controller = GetIt.I.get<DiscoveryController>();
+    _controller?.initLoadingPosts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

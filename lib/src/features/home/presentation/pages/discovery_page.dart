@@ -13,7 +13,6 @@ class DiscoveryPage extends StatefulWidget {
 
 class _DiscoveryPageState extends State<DiscoveryPage> {
   final bool isGpsActive = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -154,6 +154,13 @@ abstract class DiscoveryControllerBase with Store {
     setTodayLoading(false);
   }
 
+  void initLoadingPosts() {
+    getHighLightedPosts();
+    getNearestPosts();
+    getPromotionsPosts();
+    getTodayPosts();
+  }
+
   void dispose() {
     highlightedLoading = false;
     nearestLoading = false;

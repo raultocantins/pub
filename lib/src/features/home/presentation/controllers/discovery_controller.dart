@@ -2,6 +2,7 @@ import 'package:mobx/mobx.dart';
 import 'package:pub/src/features/home/domain/entities/list_post_entity.dart';
 import 'package:pub/src/features/home/domain/entities/post_entity.dart';
 import 'package:pub/src/features/home/domain/usecases/get_posts_usecase.dart';
+import 'package:pub/src/features/home/presentation/utils/enums/post_type_enum.dart';
 
 part 'discovery_controller.g.dart';
 
@@ -130,7 +131,8 @@ abstract class DiscoveryControllerBase with Store {
       }
     }
     setHighlightedLoading(true);
-    var r = await _getPostsUsecase();
+    var r = await _getPostsUsecase(
+        page: highlightedPagination, type: PostType.highlighted);
     r.fold((error) {
       setHighlightedError(true);
     }, (r) {
@@ -159,7 +161,8 @@ abstract class DiscoveryControllerBase with Store {
     }
 
     setNearestLoading(true);
-    var r = await _getPostsUsecase();
+    var r =
+        await _getPostsUsecase(page: nearestPagination, type: PostType.nearest);
     r.fold((error) {
       setNearestError(true);
     }, (r) {
@@ -188,7 +191,8 @@ abstract class DiscoveryControllerBase with Store {
     }
 
     setPromotionsLoading(true);
-    var r = await _getPostsUsecase();
+    var r = await _getPostsUsecase(
+        page: promotionsPagination, type: PostType.promotions);
     r.fold((error) {
       setPromotionsError(true);
     }, (r) {
@@ -217,7 +221,7 @@ abstract class DiscoveryControllerBase with Store {
     }
 
     setTodayLoading(true);
-    var r = await _getPostsUsecase();
+    var r = await _getPostsUsecase(page: todayPagination, type: PostType.today);
     r.fold((error) {
       setTodayError(true);
     }, (r) {

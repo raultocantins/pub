@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:pub/src/features/details_post/presentation/controllers/detail_post_controller.dart';
 import 'package:pub/src/features/home/domain/entities/post_entity.dart';
 import 'package:pub/src/shared/helpers/format_date.dart';
-import 'package:pub/src/shared/helpers/url_launcher.dart';
+import 'package:pub/src/shared/widgets/details_shimmer.dart';
 
 class DetailsPostPage extends StatefulWidget {
   final PostEntity entity;
@@ -105,9 +106,7 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
                       height: 12,
                     ),
                     (_controller?.isLoading ?? false)
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? const DetailsShimmerWidget()
                         : Text(
                             _controller?.entity?.description ?? '',
                             style: const TextStyle(
@@ -122,21 +121,22 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
         );
       }),
       floatingActionButton: Observer(builder: (context) {
-        return FloatingActionButton(
-          onPressed: (_controller?.isLoading ?? false) ||
-                  (_controller?.isError ?? false)
-              ? null
-              : () =>
-                  UrlLauncherCustom.launchMaps(_controller?.entity?.location),
-          child: (_controller?.isLoading ?? false)
-              ? const CircularProgressIndicator()
-              : Transform.rotate(
+        return (_controller?.isLoading ?? false) ||
+                (_controller?.isError ?? false)
+            ? Container()
+            : FloatingActionButton(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                onPressed: () => MapsLauncher.launchCoordinates(
+                    _controller?.entity?.location.latitude ?? 0,
+                    _controller?.entity?.location.longitude ?? 0),
+                child: Transform.rotate(
                   angle: 45 * 3.1415926535 / 180,
                   child: const Icon(
                     Icons.navigation_rounded,
+                    color: Colors.white,
                   ),
                 ),
-        );
+              );
       }),
     );
   }

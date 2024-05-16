@@ -7,6 +7,7 @@ class GetPostsDatasourceImpl implements GetPostsDatasource {
   Future<ListPostModel> call() async {
     try {
       final response = await MockHttpResponse.getPostsSuccess();
+      (response['list'] as List).shuffle(); //embaralhando a lista
       return ListPostModel.fromJson(response);
     } catch (e) {
       throw Exception();

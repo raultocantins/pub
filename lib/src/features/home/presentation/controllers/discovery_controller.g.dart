@@ -9,6 +9,72 @@ part of 'discovery_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$DiscoveryController on DiscoveryControllerBase, Store {
+  late final _$highlightedPaginationAtom = Atom(
+      name: 'DiscoveryControllerBase.highlightedPagination', context: context);
+
+  @override
+  int get highlightedPagination {
+    _$highlightedPaginationAtom.reportRead();
+    return super.highlightedPagination;
+  }
+
+  @override
+  set highlightedPagination(int value) {
+    _$highlightedPaginationAtom.reportWrite(value, super.highlightedPagination,
+        () {
+      super.highlightedPagination = value;
+    });
+  }
+
+  late final _$nearestPaginationAtom =
+      Atom(name: 'DiscoveryControllerBase.nearestPagination', context: context);
+
+  @override
+  int get nearestPagination {
+    _$nearestPaginationAtom.reportRead();
+    return super.nearestPagination;
+  }
+
+  @override
+  set nearestPagination(int value) {
+    _$nearestPaginationAtom.reportWrite(value, super.nearestPagination, () {
+      super.nearestPagination = value;
+    });
+  }
+
+  late final _$promotionsPaginationAtom = Atom(
+      name: 'DiscoveryControllerBase.promotionsPagination', context: context);
+
+  @override
+  int get promotionsPagination {
+    _$promotionsPaginationAtom.reportRead();
+    return super.promotionsPagination;
+  }
+
+  @override
+  set promotionsPagination(int value) {
+    _$promotionsPaginationAtom.reportWrite(value, super.promotionsPagination,
+        () {
+      super.promotionsPagination = value;
+    });
+  }
+
+  late final _$todayPaginationAtom =
+      Atom(name: 'DiscoveryControllerBase.todayPagination', context: context);
+
+  @override
+  int get todayPagination {
+    _$todayPaginationAtom.reportRead();
+    return super.todayPagination;
+  }
+
+  @override
+  set todayPagination(int value) {
+    _$todayPaginationAtom.reportWrite(value, super.todayPagination, () {
+      super.todayPagination = value;
+    });
+  }
+
   late final _$highlightedLoadingAtom = Atom(
       name: 'DiscoveryControllerBase.highlightedLoading', context: context);
 
@@ -293,7 +359,7 @@ mixin _$DiscoveryController on DiscoveryControllerBase, Store {
   }
 
   @override
-  void setHighlightedPosts(ListPostEntity v) {
+  void setHighlightedPosts(ListPostEntity? v) {
     final _$actionInfo = _$DiscoveryControllerBaseActionController.startAction(
         name: 'DiscoveryControllerBase.setHighlightedPosts');
     try {
@@ -304,7 +370,7 @@ mixin _$DiscoveryController on DiscoveryControllerBase, Store {
   }
 
   @override
-  void setNearestPosts(ListPostEntity v) {
+  void setNearestPosts(ListPostEntity? v) {
     final _$actionInfo = _$DiscoveryControllerBaseActionController.startAction(
         name: 'DiscoveryControllerBase.setNearestPosts');
     try {
@@ -315,7 +381,7 @@ mixin _$DiscoveryController on DiscoveryControllerBase, Store {
   }
 
   @override
-  void setPromotionsPosts(ListPostEntity v) {
+  void setPromotionsPosts(ListPostEntity? v) {
     final _$actionInfo = _$DiscoveryControllerBaseActionController.startAction(
         name: 'DiscoveryControllerBase.setPromotionsPosts');
     try {
@@ -326,7 +392,7 @@ mixin _$DiscoveryController on DiscoveryControllerBase, Store {
   }
 
   @override
-  void setTodayPosts(ListPostEntity v) {
+  void setTodayPosts(ListPostEntity? v) {
     final _$actionInfo = _$DiscoveryControllerBaseActionController.startAction(
         name: 'DiscoveryControllerBase.setTodayPosts');
     try {
@@ -339,6 +405,10 @@ mixin _$DiscoveryController on DiscoveryControllerBase, Store {
   @override
   String toString() {
     return '''
+highlightedPagination: ${highlightedPagination},
+nearestPagination: ${nearestPagination},
+promotionsPagination: ${promotionsPagination},
+todayPagination: ${todayPagination},
 highlightedLoading: ${highlightedLoading},
 nearestLoading: ${nearestLoading},
 promotionsLoading: ${promotionsLoading},

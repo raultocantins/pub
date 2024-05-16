@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:pub/src/features/home/domain/entities/list_post_entity.dart';
+import 'package:pub/src/features/home/domain/entities/post_entity.dart';
 import 'package:pub/src/features/home/domain/usecases/get_posts_usecase.dart';
 
 part 'discovery_controller.g.dart';
@@ -11,6 +12,18 @@ abstract class DiscoveryControllerBase with Store {
   DiscoveryControllerBase(this._getPostsUsecase);
 
   //OBSERVABLES
+
+  @observable
+  int highlightedPagination = 1;
+
+  @observable
+  int nearestPagination = 1;
+
+  @observable
+  int promotionsPagination = 1;
+
+  @observable
+  int todayPagination = 1;
 
   @observable
   bool highlightedLoading = false;
@@ -91,65 +104,136 @@ abstract class DiscoveryControllerBase with Store {
   }
 
   @action
-  void setHighlightedPosts(ListPostEntity v) {
+  void setHighlightedPosts(ListPostEntity? v) {
     highlightedPosts = v;
   }
 
   @action
-  void setNearestPosts(ListPostEntity v) {
+  void setNearestPosts(ListPostEntity? v) {
     nearestPosts = v;
   }
 
   @action
-  void setPromotionsPosts(ListPostEntity v) {
+  void setPromotionsPosts(ListPostEntity? v) {
     promotionsPosts = v;
   }
 
   @action
-  void setTodayPosts(ListPostEntity v) {
+  void setTodayPosts(ListPostEntity? v) {
     todayPosts = v;
   }
 
   Future<void> getHighLightedPosts() async {
+    if (highlightedPosts != null) {
+      if (!(highlightedPosts?.hasMore ?? false)) {
+        return;
+      }
+    }
     setHighlightedLoading(true);
     var r = await _getPostsUsecase();
     r.fold((error) {
       setHighlightedError(true);
     }, (r) {
-      setHighlightedPosts(r);
+      if (highlightedPosts == null) {
+        setHighlightedPosts(r);
+      } else {
+        List<PostEntity>? newlist = highlightedPosts?.list;
+        newlist?.addAll(r.list ?? []);
+        setHighlightedPosts(
+          ListPostEntity(list: newlist, hasMore: r.hasMore, page: r.page),
+        );
+      }
+
+      if (r.hasMore ?? false) {
+        highlightedPagination += 1;
+      }
     });
     setHighlightedLoading(false);
   }
 
   Future<void> getNearestPosts() async {
+    if (nearestPosts != null) {
+      if (!(nearestPosts?.hasMore ?? false)) {
+        return;
+      }
+    }
+
     setNearestLoading(true);
     var r = await _getPostsUsecase();
     r.fold((error) {
       setNearestError(true);
     }, (r) {
-      setNearestPosts(r);
+      if (nearestPosts == null) {
+        setNearestPosts(r);
+      } else {
+        List<PostEntity>? newlist = nearestPosts?.list;
+        newlist?.addAll(r.list ?? []);
+        setNearestPosts(
+          ListPostEntity(list: newlist, hasMore: r.hasMore, page: r.page),
+        );
+      }
+
+      if (r.hasMore ?? false) {
+        nearestPagination += 1;
+      }
     });
     setNearestLoading(false);
   }
 
   Future<void> getPromotionsPosts() async {
+    if (promotionsPosts != null) {
+      if (!(promotionsPosts?.hasMore ?? false)) {
+        return;
+      }
+    }
+
     setPromotionsLoading(true);
     var r = await _getPostsUsecase();
     r.fold((error) {
       setPromotionsError(true);
     }, (r) {
-      setPromotionsPosts(r);
+      if (promotionsPosts == null) {
+        setPromotionsPosts(r);
+      } else {
+        List<PostEntity>? newlist = promotionsPosts?.list;
+        newlist?.addAll(r.list ?? []);
+        setPromotionsPosts(
+          ListPostEntity(list: newlist, hasMore: r.hasMore, page: r.page),
+        );
+      }
+
+      if (r.hasMore ?? false) {
+        promotionsPagination += 1;
+      }
     });
     setPromotionsLoading(false);
   }
 
   Future<void> getTodayPosts() async {
+    if (todayPosts != null) {
+      if (!(todayPosts?.hasMore ?? false)) {
+        return;
+      }
+    }
+
     setTodayLoading(true);
     var r = await _getPostsUsecase();
     r.fold((error) {
       setTodayError(true);
     }, (r) {
-      setTodayPosts(r);
+      if (todayPosts == null) {
+        setTodayPosts(r);
+      } else {
+        List<PostEntity>? newlist = todayPosts?.list;
+        newlist?.addAll(r.list ?? []);
+        setTodayPosts(
+          ListPostEntity(list: newlist, hasMore: r.hasMore, page: r.page),
+        );
+      }
+
+      if (r.hasMore ?? false) {
+        todayPagination += 1;
+      }
     });
     setTodayLoading(false);
   }
@@ -161,7 +245,23 @@ abstract class DiscoveryControllerBase with Store {
     getTodayPosts();
   }
 
+  void onRefresh() {
+    setHighlightedPosts(null);
+    setNearestPosts(null);
+    setPromotionsPosts(null);
+    setTodayPosts(null);
+
+    getHighLightedPosts();
+    getNearestPosts();
+    getPromotionsPosts();
+    getTodayPosts();
+  }
+
   void dispose() {
+    highlightedPagination = 1;
+    nearestPagination = 1;
+    promotionsPagination = 1;
+    todayPagination = 1;
     highlightedLoading = false;
     nearestLoading = false;
     promotionsLoading = false;

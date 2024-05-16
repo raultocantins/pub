@@ -48,6 +48,7 @@ dependencies:
   flutter_native_splash: ^2.3.7
   flutter_launcher_icons: ^0.13.1
   shimmer: ^3.0.0
+  pull_to_refresh_flutter3: ^2.0.2
 
 flutter_native_splash:
   color: "#000000"

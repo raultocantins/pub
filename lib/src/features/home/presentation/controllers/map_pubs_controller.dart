@@ -36,9 +36,6 @@ abstract class MapPubsControllerBase with Store {
   @observable
   PriceType? priceType;
 
-  @observable
-  String? searchText;
-
   //ACTIONS
 
   @action
@@ -76,14 +73,16 @@ abstract class MapPubsControllerBase with Store {
     priceType = v;
   }
 
-  @action
-  void setSearchText(String? v) {
-    searchText = v;
-  }
-
-  Future<void> getPubs() async {
+  Future<void> getPubs({
+    String? searchText,
+  }) async {
     setLoading(true);
-    var r = await getMapPubsUsecase();
+    var r = await getMapPubsUsecase(
+      searchText: searchText,
+      environmentType: environmentType,
+      timeType: timeType,
+      priceType: priceType,
+    );
     r.fold((error) {
       setError(true);
     }, (r) {
@@ -100,6 +99,5 @@ abstract class MapPubsControllerBase with Store {
     priceType = null;
     environmentType = null;
     timeType = null;
-    searchText = null;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:pub/src/features/home/domain/entities/map_pub_entity.dart';
 import 'package:pub/src/features/home/presentation/controllers/map_pubs_controller.dart';
 import 'package:pub/src/features/home/presentation/utils/enums/environment_type_enum.dart';
+import 'package:pub/src/features/home/presentation/utils/enums/price_type_enum.dart';
 import 'package:pub/src/features/home/presentation/utils/enums/time_type_enum.dart';
 import 'package:pub/src/shared/widgets/photo_view_screen.dart';
 
@@ -19,17 +22,39 @@ class MapsPage extends StatefulWidget {
 
 class _MapsPageState extends State<MapsPage> {
   MapPubsController? _controller;
+  TextEditingController? _textEditingController;
+  Timer? _debounce;
+  String _previousText = '';
 
   @override
   void initState() {
     _controller = GetIt.I.get<MapPubsController>();
+    _textEditingController = TextEditingController();
     _controller?.getPubs();
     super.initState();
+    _textEditingController?.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    if (_textEditingController?.text == _previousText) return;
+    _previousText = _textEditingController?.text ?? '';
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if ((_textEditingController?.text.length ?? 0) >= 3) {
+        _controller?.getPubs(searchText: _textEditingController?.text);
+      }
+      if (_textEditingController?.text.isEmpty ?? false) {
+        _controller?.getPubs();
+      }
+    });
   }
 
   @override
   void dispose() {
+    _textEditingController?.removeListener(_onSearchChanged);
     _controller?.dispose();
+    _debounce?.cancel();
+    _textEditingController?.dispose();
     super.dispose();
   }
 
@@ -52,75 +77,83 @@ class _MapsPageState extends State<MapsPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
             child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.circular(10),
+              height: 50,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextField(
+                          controller: _textEditingController,
+                          style: const TextStyle(
+                            color: Colors.white,
                           ),
-                          child: const TextField(
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              ),
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(10),
-                              label: Text(
-                                'Estabelecimento, evento',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              labelStyle: TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.white,
                             ),
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.all(10),
+                            label: Text(
+                              'Estabelecimento, evento',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            labelStyle: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 12,
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        showModalFilters();
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.filter_alt_sharp,
+                            size: 30,
+                          ),
+                          Text(
+                            'Filtros',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () {
-                          showModalFilters();
-                        },
-                        child: const Row(
-                          children: [
-                            Icon(
-                              Icons.filter_alt_sharp,
-                              size: 30,
-                            ),
-                            Text(
-                              'Filtrar',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )),
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),
       body: Observer(builder: (context) {
         return FlutterMap(
           options: MapOptions(
-            initialCenter: const LatLng(-10.24399, -48.33543),
+            initialCenter: const LatLng(-10.24399, -48.32473),
             initialZoom: 15.0,
             backgroundColor: Theme.of(context).colorScheme.background,
           ),
           children: [
-            SizedBox(
-              child: TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.app',
+            GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: SizedBox(
+                child: TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
+                ),
               ),
             ),
             if (_controller?.isLoading ?? false)
@@ -147,6 +180,18 @@ class _MapsPageState extends State<MapsPage> {
                       )
                       .toList() ??
                   [],
+            ),
+            MarkerLayer(
+              markers: [
+                Marker(
+                  point: const LatLng(-10.24399, -48.32473),
+                  child: Icon(
+                    Icons.location_history,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 60,
+                  ),
+                )
+              ],
             ),
           ],
         );
@@ -361,34 +406,78 @@ class _MapsPageState extends State<MapsPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 60,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              Chip(
-                                label: Text(
-                                  'Econômico',
-                                  style: TextStyle(color: Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.priceType !=
+                                      PriceType.economic) {
+                                    _controller
+                                        ?.setPriceType(PriceType.economic);
+                                  } else {
+                                    _controller?.setPriceType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller?.priceType ==
+                                          PriceType.economic
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Econômico',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 12,
                               ),
-                              Chip(
-                                label: Text(
-                                  'Médio',
-                                  style: TextStyle(color: Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.priceType !=
+                                      PriceType.medium) {
+                                    _controller?.setPriceType(PriceType.medium);
+                                  } else {
+                                    _controller?.setPriceType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller?.priceType ==
+                                          PriceType.medium
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Médio',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 12,
                               ),
-                              Chip(
-                                label: Text(
-                                  'Caro',
-                                  style: TextStyle(color: Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.priceType !=
+                                      PriceType.expensive) {
+                                    _controller
+                                        ?.setPriceType(PriceType.expensive);
+                                  } else {
+                                    _controller?.setPriceType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller?.priceType ==
+                                          PriceType.expensive
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Caro',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ],

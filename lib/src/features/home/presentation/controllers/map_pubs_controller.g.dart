@@ -121,22 +121,6 @@ mixin _$MapPubsController on MapPubsControllerBase, Store {
     });
   }
 
-  late final _$searchTextAtom =
-      Atom(name: 'MapPubsControllerBase.searchText', context: context);
-
-  @override
-  String? get searchText {
-    _$searchTextAtom.reportRead();
-    return super.searchText;
-  }
-
-  @override
-  set searchText(String? value) {
-    _$searchTextAtom.reportWrite(value, super.searchText, () {
-      super.searchText = value;
-    });
-  }
-
   late final _$MapPubsControllerBaseActionController =
       ActionController(name: 'MapPubsControllerBase', context: context);
 
@@ -218,17 +202,6 @@ mixin _$MapPubsController on MapPubsControllerBase, Store {
   }
 
   @override
-  void setSearchText(String? v) {
-    final _$actionInfo = _$MapPubsControllerBaseActionController.startAction(
-        name: 'MapPubsControllerBase.setSearchText');
-    try {
-      return super.setSearchText(v);
-    } finally {
-      _$MapPubsControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 sliderValue: ${sliderValue},
@@ -237,8 +210,7 @@ isError: ${isError},
 pubs: ${pubs},
 environmentType: ${environmentType},
 timeType: ${timeType},
-priceType: ${priceType},
-searchText: ${searchText}
+priceType: ${priceType}
     ''';
   }
 }

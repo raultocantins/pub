@@ -13,13 +13,13 @@ mixin _$MapPubsController on MapPubsControllerBase, Store {
       Atom(name: 'MapPubsControllerBase.sliderValue', context: context);
 
   @override
-  double get sliderValue {
+  int get sliderValue {
     _$sliderValueAtom.reportRead();
     return super.sliderValue;
   }
 
   @override
-  set sliderValue(double value) {
+  set sliderValue(int value) {
     _$sliderValueAtom.reportWrite(value, super.sliderValue, () {
       super.sliderValue = value;
     });
@@ -73,6 +73,70 @@ mixin _$MapPubsController on MapPubsControllerBase, Store {
     });
   }
 
+  late final _$environmentTypeAtom =
+      Atom(name: 'MapPubsControllerBase.environmentType', context: context);
+
+  @override
+  EnvironmentType? get environmentType {
+    _$environmentTypeAtom.reportRead();
+    return super.environmentType;
+  }
+
+  @override
+  set environmentType(EnvironmentType? value) {
+    _$environmentTypeAtom.reportWrite(value, super.environmentType, () {
+      super.environmentType = value;
+    });
+  }
+
+  late final _$timeTypeAtom =
+      Atom(name: 'MapPubsControllerBase.timeType', context: context);
+
+  @override
+  TimeType? get timeType {
+    _$timeTypeAtom.reportRead();
+    return super.timeType;
+  }
+
+  @override
+  set timeType(TimeType? value) {
+    _$timeTypeAtom.reportWrite(value, super.timeType, () {
+      super.timeType = value;
+    });
+  }
+
+  late final _$priceTypeAtom =
+      Atom(name: 'MapPubsControllerBase.priceType', context: context);
+
+  @override
+  PriceType? get priceType {
+    _$priceTypeAtom.reportRead();
+    return super.priceType;
+  }
+
+  @override
+  set priceType(PriceType? value) {
+    _$priceTypeAtom.reportWrite(value, super.priceType, () {
+      super.priceType = value;
+    });
+  }
+
+  late final _$searchTextAtom =
+      Atom(name: 'MapPubsControllerBase.searchText', context: context);
+
+  @override
+  String? get searchText {
+    _$searchTextAtom.reportRead();
+    return super.searchText;
+  }
+
+  @override
+  set searchText(String? value) {
+    _$searchTextAtom.reportWrite(value, super.searchText, () {
+      super.searchText = value;
+    });
+  }
+
   late final _$MapPubsControllerBaseActionController =
       ActionController(name: 'MapPubsControllerBase', context: context);
 
@@ -99,7 +163,7 @@ mixin _$MapPubsController on MapPubsControllerBase, Store {
   }
 
   @override
-  void setSliderValue(double v) {
+  void setSliderValue(int v) {
     final _$actionInfo = _$MapPubsControllerBaseActionController.startAction(
         name: 'MapPubsControllerBase.setSliderValue');
     try {
@@ -121,12 +185,60 @@ mixin _$MapPubsController on MapPubsControllerBase, Store {
   }
 
   @override
+  void setEnvironmentType(EnvironmentType? v) {
+    final _$actionInfo = _$MapPubsControllerBaseActionController.startAction(
+        name: 'MapPubsControllerBase.setEnvironmentType');
+    try {
+      return super.setEnvironmentType(v);
+    } finally {
+      _$MapPubsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setTimeType(TimeType? v) {
+    final _$actionInfo = _$MapPubsControllerBaseActionController.startAction(
+        name: 'MapPubsControllerBase.setTimeType');
+    try {
+      return super.setTimeType(v);
+    } finally {
+      _$MapPubsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setPriceType(PriceType? v) {
+    final _$actionInfo = _$MapPubsControllerBaseActionController.startAction(
+        name: 'MapPubsControllerBase.setPriceType');
+    try {
+      return super.setPriceType(v);
+    } finally {
+      _$MapPubsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSearchText(String? v) {
+    final _$actionInfo = _$MapPubsControllerBaseActionController.startAction(
+        name: 'MapPubsControllerBase.setSearchText');
+    try {
+      return super.setSearchText(v);
+    } finally {
+      _$MapPubsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 sliderValue: ${sliderValue},
 isLoading: ${isLoading},
 isError: ${isError},
-pubs: ${pubs}
+pubs: ${pubs},
+environmentType: ${environmentType},
+timeType: ${timeType},
+priceType: ${priceType},
+searchText: ${searchText}
     ''';
   }
 }

@@ -6,6 +6,8 @@ import 'package:get_it/get_it.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pub/src/features/home/domain/entities/map_pub_entity.dart';
 import 'package:pub/src/features/home/presentation/controllers/map_pubs_controller.dart';
+import 'package:pub/src/features/home/presentation/utils/enums/environment_type_enum.dart';
+import 'package:pub/src/shared/widgets/photo_view_screen.dart';
 
 class MapsPage extends StatefulWidget {
   const MapsPage({super.key});
@@ -155,98 +157,275 @@ class _MapsPageState extends State<MapsPage> {
     showModalBottomSheet(
         context: context,
         backgroundColor: Theme.of(context).colorScheme.background,
-        isScrollControlled: false,
+        isScrollControlled: true,
         builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Observer(builder: (context) {
-              return SizedBox(
-                width: double.infinity,
-                height: 230,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Gênero musical',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Observer(builder: (context) {
+                return SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 24,
                       ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                      child: ListView.builder(
-                        itemCount: 8,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, i) => const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Chip(
-                            label: Text(
-                              'Rock',
+                      const Text(
+                        'Ambiente',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 60,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.environmentType !=
+                                      EnvironmentType.externalArea) {
+                                    _controller?.setEnvironmentType(
+                                        EnvironmentType.externalArea);
+                                  } else {
+                                    _controller?.setEnvironmentType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller
+                                              ?.environmentType ==
+                                          EnvironmentType.externalArea
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Área externa',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.environmentType !=
+                                      EnvironmentType.internalArea) {
+                                    _controller?.setEnvironmentType(
+                                        EnvironmentType.internalArea);
+                                  } else {
+                                    _controller?.setEnvironmentType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller
+                                              ?.environmentType ==
+                                          EnvironmentType.internalArea
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Ambiente interno',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.environmentType !=
+                                      EnvironmentType.rooftop) {
+                                    _controller?.setEnvironmentType(
+                                        EnvironmentType.rooftop);
+                                  } else {
+                                    _controller?.setEnvironmentType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller
+                                              ?.environmentType ==
+                                          EnvironmentType.rooftop
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Rooftop',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      const Text(
+                        'Horário de Funcionamento',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 60,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Chip(
+                                label: Text(
+                                  'Aberto agora',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Chip(
+                                label: Text(
+                                  'Aberto 24 Horas',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Chip(
+                                label: Text(
+                                  'Fechados agora',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      const Text(
+                        'Preço',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 60,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Chip(
+                                label: Text(
+                                  'Econômico',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Chip(
+                                label: Text(
+                                  'Médio',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Chip(
+                                label: Text(
+                                  'Caro',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Distância',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '${_controller?.sliderValue} km',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Slider.adaptive(
+                        value: _controller?.sliderValue.toDouble() ?? 0.0,
+                        onChanged: (v) =>
+                            _controller?.setSliderValue(v.toInt()),
+                        label: '${_controller?.sliderValue}',
+                        max: 30,
+                        min: 5,
+                      ),
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            style: const ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.black),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              'Voltar',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
-                        ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  Theme.of(context).colorScheme.primary),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              _controller?.getPubs();
+                            },
+                            child: const Text(
+                              'Pesquisar',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const Text(
-                      'Distância',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Slider.adaptive(
-                      value: _controller?.sliderValue ?? 0.0,
-                      onChanged: (v) => _controller?.setSliderValue(v),
-                      label: '${_controller?.sliderValue}',
-                      max: 30,
-                      min: 5,
-                    ),
-                    const Expanded(
-                      child: SizedBox(),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton(
-                          style: const ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(Colors.black),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text(
-                            'Voltar',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                                Theme.of(context).colorScheme.primary),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            _controller?.getPubs();
-                          },
-                          child: const Text(
-                            'Pesquisar',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }),
+                    ],
+                  ),
+                );
+              }),
+            ),
           );
         });
   }
@@ -298,6 +477,17 @@ class _MapsPageState extends State<MapsPage> {
                             return Padding(
                               padding: const EdgeInsets.only(right: 24),
                               child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PhotoViewScreen(
+                                        images: pub.images,
+                                        initialIndex: i,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: SizedBox(
                                   width: 150,
                                   child: Card(

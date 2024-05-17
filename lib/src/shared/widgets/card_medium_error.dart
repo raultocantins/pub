@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// É usado na lista de posts, detalhes do post e detalhes do estabelecimento
 class CardMediumError extends StatelessWidget {
   final Function() onPressed;
   const CardMediumError({required this.onPressed, super.key});

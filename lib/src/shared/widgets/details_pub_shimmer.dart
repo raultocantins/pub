@@ -43,8 +43,7 @@ class DetailsPubShimmerWidget extends StatelessWidget {
           ListTile(
             title: const Text(
               'Endereço',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(color: Colors.white),
             ),
             subtitle: Column(
               children: [
@@ -74,8 +73,9 @@ class DetailsPubShimmerWidget extends StatelessWidget {
           ListTile(
             title: const Text(
               'Contato',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             subtitle: Column(
               children: [

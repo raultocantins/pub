@@ -5,6 +5,7 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:pub/src/features/details_post/presentation/controllers/detail_post_controller.dart';
 import 'package:pub/src/features/home/domain/entities/post_entity.dart';
 import 'package:pub/src/shared/helpers/format_date.dart';
+import 'package:pub/src/shared/widgets/card_medium_error.dart';
 import 'package:pub/src/shared/widgets/details_shimmer.dart';
 
 class DetailsPostPage extends StatefulWidget {
@@ -107,12 +108,19 @@ class _DetailsPostPageState extends State<DetailsPostPage> {
                     ),
                     (_controller?.isLoading ?? false)
                         ? const DetailsShimmerWidget()
-                        : Text(
-                            _controller?.entity?.description ?? '',
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
+                        : (_controller?.isError ?? false)
+                            ? Center(
+                                child: CardMediumError(
+                                  onPressed: () =>
+                                      _controller?.getDetail(widget.entity.id),
+                                ),
+                              )
+                            : Text(
+                                _controller?.entity?.description ?? '',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                   ],
                 ),
               ),

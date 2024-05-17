@@ -55,6 +55,9 @@ class DetailsShimmerWidget extends StatelessWidget {
               color: Colors.white,
             ),
           ),
+          const SizedBox(
+            height: 12,
+          ),
         ],
       ),
     );

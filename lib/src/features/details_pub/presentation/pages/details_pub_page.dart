@@ -3,7 +3,9 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:pub/src/features/details_pub/presentation/controllers/detail_pub_controller.dart';
+import 'package:pub/src/shared/widgets/card_medium_error.dart';
 import 'package:pub/src/shared/widgets/details_pub_shimmer.dart';
+import 'package:pub/src/shared/widgets/photo_view_screen.dart';
 
 class DetailsPubPage extends StatefulWidget {
   final String pubId;
@@ -75,67 +77,94 @@ class _DetailsPubPageState extends State<DetailsPubPage> {
             ),
             (_controller?.isLoading ?? false)
                 ? const Expanded(child: DetailsPubShimmerWidget())
-                : Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                            itemCount: _controller?.entity?.images.length ?? 0,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, i) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 24),
-                                child: GestureDetector(
-                                  child: SizedBox(
-                                    width: 150,
-                                    child: Card(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: NetworkImage(
-                                              _controller?.entity?.images[i] ??
-                                                  '',
+                : (_controller?.isError ?? false)
+                    ? Expanded(
+                        child: Center(
+                          child: CardMediumError(
+                            onPressed: () =>
+                                _controller?.getDetailPub(widget.pubId),
+                          ),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                              height: 100,
+                              child: ListView.builder(
+                                itemCount:
+                                    _controller?.entity?.images.length ?? 0,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 24),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PhotoViewScreen(
+                                              images:
+                                                  _controller?.entity?.images ??
+                                                      [],
+                                              initialIndex: i,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: SizedBox(
+                                        width: 150,
+                                        child: Card(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: NetworkImage(
+                                                  _controller
+                                                          ?.entity?.images[i] ??
+                                                      '',
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
+                                  );
+                                },
+                              ),
+                            ),
                           ),
-                        ),
+                          ListTile(
+                            title: const Text(
+                              'Endereço',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              _controller?.entity?.address ?? '',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text(
+                              'Contato',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              _controller?.entity?.contactNumber ?? '',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
-                      ListTile(
-                        title: const Text(
-                          'Endereço',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          _controller?.entity?.address ?? '',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      ListTile(
-                        title: const Text(
-                          'Contato',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          _controller?.entity?.contactNumber ?? '',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
           ],
         );
       }),

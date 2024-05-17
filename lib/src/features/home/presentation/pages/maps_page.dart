@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:pub/src/features/home/domain/entities/map_pub_entity.dart';
 import 'package:pub/src/features/home/presentation/controllers/map_pubs_controller.dart';
 import 'package:pub/src/features/home/presentation/utils/enums/environment_type_enum.dart';
+import 'package:pub/src/features/home/presentation/utils/enums/time_type_enum.dart';
 import 'package:pub/src/shared/widgets/photo_view_screen.dart';
 
 class MapsPage extends StatefulWidget {
@@ -272,34 +273,77 @@ class _MapsPageState extends State<MapsPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 60,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              Chip(
-                                label: Text(
-                                  'Aberto agora',
-                                  style: TextStyle(color: Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.timeType !=
+                                      TimeType.nowOpen) {
+                                    _controller?.setTimeType(TimeType.nowOpen);
+                                  } else {
+                                    _controller?.setTimeType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller?.timeType ==
+                                          TimeType.nowOpen
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Aberto agora',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 12,
                               ),
-                              Chip(
-                                label: Text(
-                                  'Aberto 24 Horas',
-                                  style: TextStyle(color: Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.timeType !=
+                                      TimeType.open24) {
+                                    _controller?.setTimeType(TimeType.open24);
+                                  } else {
+                                    _controller?.setTimeType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller?.timeType ==
+                                          TimeType.open24
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Aberto 24 Horas',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 12,
                               ),
-                              Chip(
-                                label: Text(
-                                  'Fechados agora',
-                                  style: TextStyle(color: Colors.white),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_controller?.timeType !=
+                                      TimeType.closedNow) {
+                                    _controller
+                                        ?.setTimeType(TimeType.closedNow);
+                                  } else {
+                                    _controller?.setTimeType(null);
+                                  }
+                                },
+                                child: Chip(
+                                  backgroundColor: _controller?.timeType ==
+                                          TimeType.closedNow
+                                      ? Theme.of(context).colorScheme.primary
+                                      : null,
+                                  label: const Text(
+                                    'Fechados agora',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ),
                             ],

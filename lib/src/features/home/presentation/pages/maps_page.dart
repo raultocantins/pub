@@ -11,6 +11,7 @@ import 'package:pub/src/features/home/presentation/controllers/map_pubs_controll
 import 'package:pub/src/features/home/presentation/utils/enums/environment_type_enum.dart';
 import 'package:pub/src/features/home/presentation/utils/enums/price_type_enum.dart';
 import 'package:pub/src/features/home/presentation/utils/enums/time_type_enum.dart';
+import 'package:pub/src/shared/widgets/card_medium_error.dart';
 import 'package:pub/src/shared/widgets/photo_view_screen.dart';
 
 class MapsPage extends StatefulWidget {
@@ -143,7 +144,7 @@ class _MapsPageState extends State<MapsPage> {
         return FlutterMap(
           options: MapOptions(
             initialCenter: const LatLng(-10.24399, -48.32473),
-            initialZoom: 15.0,
+            initialZoom: 14.0,
             backgroundColor: Theme.of(context).colorScheme.background,
           ),
           children: [
@@ -151,15 +152,16 @@ class _MapsPageState extends State<MapsPage> {
               onTap: () => FocusScope.of(context).unfocus(),
               child: SizedBox(
                 child: TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  userAgentPackageName: 'com.example.app',
+                  urlTemplate:
+                      'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+                  additionalOptions: const {
+                    'accessToken':
+                        'pk.eyJ1IjoiYWxleHJhdWwiLCJhIjoiY2x3YXgwa2diMGlyejJtcWszNjNuYTlxbiJ9.msz1jd1edJKxR7xKWEiFsw', //retirar access token daqui
+                    'id': 'alexraul/clwcf6f2w01ru01qg5cf9g7i6',
+                  },
                 ),
               ),
             ),
-            if (_controller?.isLoading ?? false)
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
             MarkerLayer(
               markers: _controller?.pubs
                       ?.map(
@@ -188,11 +190,29 @@ class _MapsPageState extends State<MapsPage> {
                   child: Icon(
                     Icons.location_history,
                     color: Theme.of(context).colorScheme.primary,
-                    size: 60,
+                    size: 52,
                   ),
                 )
               ],
             ),
+            if (_controller?.isLoading ?? false)
+              const Center(
+                child: CircularProgressIndicator(),
+              )
+            else if (_controller?.isError ?? false)
+              Center(
+                child: SizedBox(
+                  width: 300,
+                  height: 200,
+                  child: Card(
+                    elevation: 1,
+                    color: Theme.of(context).colorScheme.background,
+                    child: CardMediumError(
+                      onPressed: () => _controller?.getPubs(),
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
       }),

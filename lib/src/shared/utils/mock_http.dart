@@ -1,5 +1,5 @@
 class MockHttpResponse {
-  static const defaultDuration = Duration(milliseconds: 1500);
+  static const defaultDuration = Duration(milliseconds: 500);
   static Future<Map<String, dynamic>> getPostsSuccess(
       {Duration duration = defaultDuration}) async {
     await Future.delayed(duration);

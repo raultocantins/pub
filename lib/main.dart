@@ -5,11 +5,13 @@ import 'package:pub/src/features/details_post/presentation/pages/details_post_pa
 import 'package:pub/src/features/details_pub/presentation/pages/details_pub_page.dart';
 import 'package:pub/src/features/home/presentation/pages/home_page.dart';
 import 'package:pub/src/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:pub/src/core/geolocator/location_controller.dart';
 import 'package:pub/src/shared/helpers/local_storage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   GetItCore(GetIt.instance).init();
+  GetIt.I.get<LocationController>().getPosition();
   runApp(const MyApp());
 }
 

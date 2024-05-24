@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:pub/src/core/geolocator/location_controller.dart';
 import 'package:pub/src/features/details_post/data/repositories/get_detail_repository.dart';
 import 'package:pub/src/features/details_post/domain/usecases/get_detail_usecase.dart';
 import 'package:pub/src/features/details_post/external/get_detail_datasource.dart';
@@ -64,6 +65,10 @@ class GetItCore {
 
     instance.registerSingleton<MapPubsController>(
       MapPubsController(instance()),
+    );
+
+    instance.registerSingleton<LocationController>(
+      LocationController(),
     );
   }
 }

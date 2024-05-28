@@ -85,6 +85,7 @@ class _PostsTodayWidgetState extends State<PostsTodayWidget> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Card(
+                                                color: Colors.transparent,
                                                 child: Container(
                                                   height: 100,
                                                   width: 120,

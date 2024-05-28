@@ -117,6 +117,7 @@ class _DetailsPubPageState extends State<DetailsPubPage> {
                                       child: SizedBox(
                                         width: 150,
                                         child: Card(
+                                          color: Colors.transparent,
                                           child: Container(
                                             decoration: BoxDecoration(
                                               borderRadius:

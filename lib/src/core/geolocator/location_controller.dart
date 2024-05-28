@@ -30,7 +30,8 @@ abstract class LocationControllerBase with Store {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      // return Future.error('Location services are disabled.');
+      return;
     }
 
     permission = await Geolocator.checkPermission();
@@ -42,19 +43,22 @@ abstract class LocationControllerBase with Store {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+        // return Future.error('Location permissions are denied');
+        return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      // return Future.error(
+      //     'Location permissions are permanently denied, we cannot request permissions.');
+      return;
     }
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    final location = await Geolocator.getCurrentPosition();
+    final location = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium);
     setLocation(location);
   }
 }

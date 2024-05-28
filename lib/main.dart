@@ -7,31 +7,22 @@ import 'package:pub/src/features/home/presentation/pages/home_page.dart';
 import 'package:pub/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:pub/src/core/geolocator/location_controller.dart';
 import 'package:pub/src/shared/helpers/local_storage.dart';
+import 'package:pub/src/shared/helpers/navigator.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   GetItCore(GetIt.instance).init();
-  GetIt.I.get<LocationController>().getPosition();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  Future<bool> verificarOnboarding() async {
-    bool isOpenedOnboarding =
-        await LocalStorageCustom.getBool('isOpenedOnboarding');
-    if (isOpenedOnboarding) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pub',
+      navigatorKey: NavigatorCustom.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -43,20 +34,13 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: FutureBuilder<bool>(
-        future: verificarOnboarding(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container();
-          } else {
-            final bool onboardingMostrado = snapshot.data ?? false;
-            return onboardingMostrado
-                ? const HomePage()
-                : const OnboardingPage();
-          }
-        },
-      ),
+      home: const SplashPage(),
       onGenerateRoute: (settings) {
+        if (settings.name == '/onboarding') {
+          return MaterialPageRoute(
+            builder: (context) => const OnboardingPage(),
+          );
+        }
         if (settings.name == '/home') {
           return MaterialPageRoute(
             builder: (context) => const HomePage(),
@@ -83,5 +67,43 @@ class MyApp extends StatelessWidget {
         return null;
       },
     );
+  }
+}
+
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    checkInitialDependencies();
+    super.initState();
+  }
+
+  Future<void> checkInitialDependencies() async {
+    //VERIFICA LOCALIZAÇAO
+    await GetIt.I.get<LocationController>().getPosition();
+
+    //VERIFICAR ONBOARDING
+    await verificarOnboarding();
+  }
+
+  Future<void> verificarOnboarding() async {
+    bool isOpenedOnboarding =
+        await LocalStorageCustom.getBool('isOpenedOnboarding');
+    if (isOpenedOnboarding) {
+      NavigatorCustom().pushReplacementNamed('/home');
+    } else {
+      NavigatorCustom().pushReplacementNamed('/onboarding');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
   }
 }

@@ -85,6 +85,7 @@ class _PostsPromotionsWidgetState extends State<PostsPromotionsWidget> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Card(
+                                                color: Colors.transparent,
                                                 child: Container(
                                                   height: 100,
                                                   width: 120,

@@ -6,6 +6,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:latlong2/latlong.dart';
+import 'package:pub/src/core/geolocator/location_controller.dart';
 import 'package:pub/src/features/home/domain/entities/map_pub_entity.dart';
 import 'package:pub/src/features/home/presentation/controllers/map_pubs_controller.dart';
 import 'package:pub/src/features/home/presentation/utils/enums/environment_type_enum.dart';
@@ -24,6 +25,7 @@ class MapsPage extends StatefulWidget {
 class _MapsPageState extends State<MapsPage> {
   MapPubsController? _controller;
   TextEditingController? _textEditingController;
+  LocationController? _locationController;
   Timer? _debounce;
   String _previousText = '';
 
@@ -31,6 +33,7 @@ class _MapsPageState extends State<MapsPage> {
   void initState() {
     _controller = GetIt.I.get<MapPubsController>();
     _textEditingController = TextEditingController();
+    _locationController = GetIt.I.get<LocationController>();
     _controller?.getPubs();
     super.initState();
     _textEditingController?.addListener(_onSearchChanged);
@@ -186,7 +189,10 @@ class _MapsPageState extends State<MapsPage> {
             MarkerLayer(
               markers: [
                 Marker(
-                  point: const LatLng(-10.24399, -48.32473),
+                  point: LatLng(
+                    _locationController?.location?.latitude ?? -10.24399,
+                    _locationController?.location?.longitude ?? -48.32473,
+                  ),
                   child: Icon(
                     Icons.location_history,
                     color: Theme.of(context).colorScheme.primary,
@@ -213,6 +219,41 @@ class _MapsPageState extends State<MapsPage> {
                   ),
                 ),
               ),
+            Observer(builder: (context) {
+              return Column(
+                children: [
+                  if (_locationController?.location == null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: TextButton(
+                        onPressed: () => _locationController?.getPosition(),
+                        style: const ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.black),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 6,
+                            ),
+                            Text(
+                              'Ativar localização',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            }),
           ],
         );
       }),

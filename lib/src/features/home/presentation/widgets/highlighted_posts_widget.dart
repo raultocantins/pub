@@ -82,6 +82,7 @@ class _HighlightedPostsWidgetState extends State<HighlightedPostsWidget> {
                                           child: SizedBox(
                                             width: 300,
                                             child: Card(
+                                              color: Colors.transparent,
                                               child: Container(
                                                 decoration: BoxDecoration(
                                                   borderRadius:

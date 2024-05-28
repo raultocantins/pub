@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-// import 'package:pub/src/core/geolocator/location_controller.dart';
+import 'package:pub/src/core/geolocator/location_controller.dart';
 import 'package:pub/src/features/home/presentation/controllers/discovery_controller.dart';
 import 'package:pub/src/features/home/presentation/widgets/highlighted_posts_widget.dart';
 import 'package:pub/src/features/home/presentation/widgets/posts_nearest_widget.dart';
@@ -21,12 +21,12 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
       RefreshController(initialRefresh: false);
   final bool isGpsActive = false;
   DiscoveryController? _controller;
-  // LocationController? _locationController;
+  LocationController? _locationController;
 
   @override
   void initState() {
     _controller = GetIt.I.get<DiscoveryController>();
-    // _locationController = GetIt.I.get<LocationController>();
+    _locationController = GetIt.I.get<LocationController>();
     super.initState();
   }
 
@@ -60,43 +60,44 @@ class _DiscoveryPageState extends State<DiscoveryPage> {
         onRefresh: _onRefresh,
         onLoading: _onLoading,
         child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Observer(
-              //   builder: (context) {
-              //     return Column(
-              //       children: [
-              //         if (_locationController?.location == null)
-              //           Padding(
-              //             padding: const EdgeInsets.symmetric(horizontal: 24),
-              //             child: TextButton(
-              //               onPressed: () => _locationController?.getPosition(),
-              //               child: const Row(
-              //                 mainAxisAlignment: MainAxisAlignment.center,
-              //                 children: [
-              //                   Icon(
-              //                     Icons.location_on,
-              //                     color: Colors.white,
-              //                   ),
-              //                   SizedBox(
-              //                     width: 6,
-              //                   ),
-              //                   Text(
-              //                     'Ativar localização',
-              //                     style: TextStyle(
-              //                       color: Colors.white,
-              //                     ),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ),
-              //       ],
-              //     );
-              //   },
-              // ),
+              Observer(
+                builder: (context) {
+                  return Column(
+                    children: [
+                      if (_locationController?.location == null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: TextButton(
+                            onPressed: () => _locationController?.getPosition(),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  'Ativar localização',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
               Padding(
                 padding: EdgeInsets.only(
                     left: 24, top: isGpsActive ? 24 : 0, bottom: 12),
